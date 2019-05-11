@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.playcoding</groupId>
@@ -17,4 +19,45 @@
     </dependency>
   </dependencies>
   
+  <build>
+    <plugins>
+    
+      <!-- compile jsp source files, and copy & modify `WEB-INF/web.xml` to `target/web.xml` -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-jspc-maven-plugin</artifactId>
+        <version>9.4.4.v20170414</version>
+        <executions>
+          <execution>
+            <id>jspc</id>
+            <goals>
+              <goal>jspc</goal>
+            </goals>
+            <configuration>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- package war file -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+
+          <!-- exclude jsp source files since they are compiled already -->
+          <packagingExcludes>
+            **/*.jsp,
+            **/*.jspx
+          </packagingExcludes>
+
+          <!-- use compiled web.xml when `mvn package`, remark this line when debugging webapp in eclipse -->
+          <webXml>${project.basedir}/target/web.xml</webXml>
+
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
 </project>
