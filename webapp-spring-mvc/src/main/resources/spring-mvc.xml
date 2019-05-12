@@ -26,8 +26,12 @@
   <!-- autowired -->
   <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
 
-  <!-- controller scan -->
-  <context:component-scan base-package="com.playcoding.webapp.controller" />
+  <!-- *********************************
+    bean scan is not allowed by Jar2Exe. 
+    instead, beans need to be declared explicitly, one by one
+  ********************************* -->
+  <!-- <context:component-scan base-package="com.playcoding.webapp.controller" /> -->
+  <bean class="com.playcoding.webapp.controller.TestDemoAction"></bean>
 
   <!-- jsp files -->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

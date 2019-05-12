@@ -19,8 +19,12 @@
   <!-- autowired -->
   <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
 
-  <!-- service scan -->
-  <context:component-scan base-package="com.playcoding.webapp.service" />
+  <!-- *********************************
+    bean scan is not allowed by Jar2Exe. 
+    instead, beans need to be declared explicitly, one by one
+  ********************************* -->
+  <!-- <context:component-scan base-package="com.playcoding.webapp.service" /> -->
+  <bean class="com.playcoding.webapp.service.TestDemoService" />
 
   <!-- connection pool -->
   <beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -37,10 +41,35 @@
   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     <property name="configLocation" value="classpath:mybatis-config.xml" />
     <property name="dataSource" ref="dataSource" />
-    <property name="mapperLocations" value="classpath*:mapper/*.xml" />
+    
+    <!-- *********************************
+      resource scan is not allowed by Jar2Exe.
+      instead, mapper xml need to be declared explicitly, one by one
+    ********************************* -->
+    <!-- <property name="mapperLocations" value="classpath*:mapper/*.xml" /> -->
+    <property name="mapperLocations">
+      <list>
+        <value>classpath*:mapper/TestDemoDao.xml</value>
+      </list>
+    </property>
+    
   </bean>
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+
+  <!-- *********************************
+    bean scan is not allowed by Jar2Exe.
+  ********************************* -->
+  <!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <property name="basePackage" value="com.playcoding.webapp.dao" />
+  </bean> -->
+  
+  <!-- *********************************
+    instead, mapper interface need to be declared explicitly, one by one
+  ********************************* -->
+  <bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true" lazy-init="true">
+    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+  </bean>
+  <bean id="testDemoDao" parent="baseMapper">
+    <property name="mapperInterface" value="com.playcoding.webapp.dao.TestDemoDao" />
   </bean>
 
 </beans>
