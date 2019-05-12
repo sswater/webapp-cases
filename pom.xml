@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
     <module>webapp-simple</module>
+    <module>webapp-spring-mvc</module>
   </modules>
 </project>

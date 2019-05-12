@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="600 seconds">
+
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d [%-15thread] %-5level %logger{35}.%method - %msg %n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="com.playcoding" level="TRACE" />
+
+  <root>
+    <level value="warn" />
+    <appender-ref ref="stdout" />
+  </root>
+
+</configuration>
